@@ -40,6 +40,54 @@ public class WorldDB {
 	public static final String	BACKGROUND_CYAN		= "\u001B[46m";
 	public static final String	BACKGROUND_WHITE	= "\u001B[47m";
 	
+	
+	private static String chooseTable() {
+		while(true) {
+			System.out.println( BACKGROUND_MAGENTA + "\n--- TABULAS ---" + RESET
+					+ "\n1. City"
+					+ "\n2. Country"
+					+ "\n3. CountryLanguage"
+					+ "\n0. Atpakaļ"
+					+ "\nIzvēlies tabulu: " + BLINK);
+			
+			String c = scan.nextLine().trim();
+
+			
+			return switch(c) {
+			case "1" -> "city";
+			case "2" -> "country";
+			case "3" -> "countrylanguage";
+			case "0" -> "exit";
+			
+			default -> {
+				System.out.println(BACKGROUND_RED + HIGH_INTENSITY  + "Nepareize izvēle!" + RESET);
+				yield "exit";
+			}
+			};
+		}
+	}
+	
+	private static void tableMenu(String table, SelectOperation selectOp) {
+		boolean back = false;
+		
+		while(!back) {
+			System.out.println(BACKGROUND_MAGENTA + "\n--- " + table.toUpperCase() + " ---" + RESET
+					+ "\n1. Atlasīt (SELECT)"
+					+ "\n2. Pievienot (INSERT)"
+					+ "\n3. Atjaunināt (UPDATE)"
+					+ "\n4. Dzēst (DELETE)"
+					+ "\n0. Atpakaļ"
+					+ "\nIzvēlies izvēli: " + BLINK);
+			
+			String c = scan.nextLine().trim();
+			
+			switch(c) {
+			
+			}
+
+		}
+	}
+	
 	public static void main(String[] args) {
 		try {
 			con = DataBaseConnection.getConnection();
@@ -52,11 +100,33 @@ public class WorldDB {
 			
 			
 			while(running) {
-				System.out.println("\n----- WORLD DB -----"
+				System.out.println(BACKGROUND_MAGENTA + "\n----- WORLD DB -----" + RESET
 						+ "\n1. Tabulas"
 						+ "\n2. Skaits"
-						+ "\n0. Apturēt");
+						+ "\n0. Apturēt"
+						+ "\nIzvēlies darbību: " + BLINK);
+				
+				String mainChoice = scan.nextLine().trim();
+				
+				switch(mainChoice) {
+				case "1" -> {
+					String table = chooseTable();
+					
+					if(!table.equals("exit")) {
+//						tableMenu(table, selectOp);
+					}
+				}
+				
+				case "2" ->
+				System.out.println("Not implemented");
+				
+				case "0" -> running = false;
+				
+				default -> System.out.println(BACKGROUND_RED + HIGH_INTENSITY  + "Nepareize izvēle!" + RESET);
+				}
+				
 			}
+			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
