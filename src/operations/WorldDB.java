@@ -38,7 +38,7 @@ public class WorldDB {
                 case "0" -> "exit";
 
                 default -> {
-                    System.out.println(Ansi.error("Nepareiza izvēle!"));
+                    System.out.println(Ansi.warning("Nepareiza izvēle!"));
 
                     yield "exit";
                 }
@@ -71,7 +71,7 @@ public class WorldDB {
                 case "1" -> selectOp.select(con, table);
                 case "0" -> back = true;
                 default ->
-                        System.out.println(Ansi.error("Nepareiza izvēle!"));
+                        System.out.println(Ansi.warning("Nepareiza izvēle!"));
             }
         }
     }
@@ -85,6 +85,7 @@ public class WorldDB {
             System.out.println(Ansi.success("Izveidots savienojums ar DB"));
 
             SelectOperation selectOp = new SelectOperation();
+            ViewManager viewManager = new ViewManager(con, selectOp, scan);
 
             boolean running = true;
 
@@ -95,7 +96,7 @@ public class WorldDB {
                         + "\n----- WORLD DB -----"
                         + Ansi.RESET
                         + "\n1. Tabulas"
-                        + "\n2. Skaits"
+                        + "\n2. Skats"
                         + "\n0. Apturēt"
                         + "\nIzvēlies darbību: "
                         + Ansi.RESET
@@ -112,10 +113,10 @@ public class WorldDB {
                             tableMenu(table, selectOp);
                         }
                     }
-                    case "2" ->System.out.println("Not implemented");
+                    case "2" -> viewManager.showViewsMenu();
                     case "0" ->running = false;
                     default ->
-                            System.out.println(Ansi.error("Nepareiza izvēle!"));
+                            System.out.println(Ansi.warning("Nepareiza izvēle!"));
                 }
             }
 
