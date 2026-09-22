@@ -46,7 +46,7 @@ public class WorldDB {
         }
     }
 
-    private static void tableMenu(String table, SelectOperation selectOp, InsertOperation insertOp) {
+    private static void tableMenu(String table, SelectOperation selectOp, InsertOperation insertOp, UpdateOperation updateOp) {
 
         boolean back = false;
 
@@ -70,7 +70,11 @@ public class WorldDB {
             switch (choice) {
                 case "1" -> selectOp.select(con, table);
                 case "2" -> insertOp.insert(con, table);
-                case "0" -> back = true;
+                case "3" -> updateOp.update(con, table);
+                case "0" -> {
+                	back = true;
+                	break;
+                }
                 default ->
                         System.out.println(Ansi.warning("Nepareiza izvēle!"));
             }
@@ -88,6 +92,7 @@ public class WorldDB {
             SelectOperation selectOp = new SelectOperation();
             ViewManager viewManager = new ViewManager(con, selectOp, scan);
             InsertOperation insertOp = new InsertOperation();
+            UpdateOperation updateOp = new UpdateOperation();
 
             boolean running = true;
 
@@ -112,7 +117,7 @@ public class WorldDB {
                         String table = chooseTable();
 
                         if (!table.equals("exit")) {
-                            tableMenu(table, selectOp, insertOp);
+                            tableMenu(table, selectOp, insertOp, updateOp);
                         }
                     }
                     case "2" -> viewManager.showViewsMenu();
